@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "autoprefixer": "^10.4.18",
+    "next": "^14.1.3",
+    "postcss": "^8.4.35",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "name": "ddotto",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "@types/node": "20.11.28",
+    "@types/react": "18.2.66",
+    "tailwindcss": "^3.4.1",
+    "typescript": "5.4.2"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "description": ""
+}
