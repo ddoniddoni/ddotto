@@ -8,7 +8,7 @@ interface ILottoProps {
   firstWinnerNumber: number;
 }
 
-const makeBallColor = (balls: number[]) => {
+export const makeBallColor = (balls: number[]) => {
   let array = [];
   balls.forEach((ball) => {
     let color = "";
@@ -25,7 +25,7 @@ const makeBallColor = (balls: number[]) => {
   return array;
 };
 
-const colorVariants = {
+export const colorVariants = {
   red: "bg-red-500 hover:bg-red-400 text-black",
   orange: "bg-orange-500 hover:bg-orange-400 text-black",
   yellow: "bg-yellow-300 hover:bg-yellow-400 text-black",
@@ -46,19 +46,13 @@ export default function Lotto({
   const bonus = makeBallColor([bonusBall]);
   return (
     <div className="w-full">
-      <div className="flex flex-col mt-6 rounded-3xl bg-gray-800 w-full h-full">
+      <div className="flex flex-row mt-6 rounded-3xl bg-gray-800 w-full h-full">
         <div className="flex w-full justify-center items-center">
           <span className="w-48 h-28 pl-4 text-2xl flex justify-center items-center">
             당첨 번호
           </span>
           <div className="w-full h-full flex justify-evenly items-center">
-            {winnerNumbers.map((winner) => (
-              <Ball
-                key={winner.number}
-                number={winner.number}
-                color={colorVariants[winner.color]}
-              />
-            ))}
+            <Ball balls={winnerNumbers} />
           </div>
         </div>
         <div className="flex w-full justify-center items-center">
@@ -66,24 +60,18 @@ export default function Lotto({
             보너스 번호
           </span>
           <div className="w-full h-full flex justify-evenly items-center">
-            {bonus.map((ball) => (
-              <Ball
-                key={ball.number}
-                number={ball.number}
-                color={colorVariants[ball.color]}
-              />
-            ))}
+            <Ball balls={bonus} />
           </div>
         </div>
       </div>
       <div className="flex flex-row justify-evenly rounded-3xl py-8 bg-gray-800 w-full h-full mt-6">
-        <div className="flex justify-center items-center px-5 text-2xl w-fit bg-gray-500 rounded-2xl">
+        <div className="flex justify-center items-center px-5  text-2xl w-fit p-3 bg-gray-500 rounded-2xl">
           Lotto 총 판매액 : {totalSellAmount.toLocaleString("ko-KR")}원
         </div>
         <div className="flex justify-center items-center px-5 text-2xl w-fit p-3 bg-gray-500 rounded-2xl">
           1등 1게임당 금액 : {firstWinnerAmount.toLocaleString("ko-KR")}원
         </div>
-        <div className="flex justify-center items-center px-5 text-2xl w-fit bg-gray-500 rounded-2xl">
+        <div className="flex justify-center items-center px-5  text-2xl w-fit p-3 bg-gray-500 rounded-2xl">
           1등 당첨자 : {firstWinnerNumber}명
         </div>
       </div>

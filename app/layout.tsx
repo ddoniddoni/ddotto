@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="pt-28 bg-neutral-900 text-zinc-200">
+      <body className="min-w-[1920px] bg-neutral-900 text-zinc-200">
         <Navigation />
         {children}
       </body>
