@@ -6,29 +6,23 @@ import { db } from "../firebase";
 export const metadata: Metadata = {
   title: "history",
 };
-
-export interface IDdotto {
-  date: string;
-  ddottos: string;
-}
 // Firebase 데이터 삽입
 // const setData = async () => {
 //   try {
-//     await setDoc(doc(db, "ddottos", "1111"), {
-//       totSellamnt: 116382835000,
-//       returnValue: "success",
-//       drwNoDate: "2024-03-16",
-//       firstWinamnt: 1714662540,
-//       drwtNo6: 45,
-//       drwtNo4: 33,
-//       firstPrzwnerCo: 16,
-//       drwtNo5: 43,
-//       bnusNo: 4,
-//       firstAccumamnt: 27434600640,
-//       drwNo: 1111,
-//       drwtNo2: 13,
-//       drwtNo3: 30,
-//       drwtNo1: 3,
+//     await setDoc(doc(db, "ddottos", "1112"), {
+//       totSellamnt: 114216084000,
+//       drwNoDate: "2024-03-23",
+//       firstWinamnt: 2804455650,
+//       drwtNo6: 44,
+//       drwtNo4: 36,
+//       firstPrzwnerCo: 10,
+//       drwtNo5: 42,
+//       bnusNo: 24,
+//       firstAccumamnt: 28044556500,
+//       drwNo: 1112,
+//       drwtNo2: 20,
+//       drwtNo3: 26,
+//       drwtNo1: 16,
 //     });
 //     console.log("aa");
 //   } catch (e) {
@@ -40,9 +34,6 @@ export default function Page() {
   return (
     <div className="w-full flex justify-center mt-6">
       <div className="w-2/3">
-        <div className="flex justify-center items-center py-4 rounded-3xl bg-gray-800 w-full h-20">
-          <p className="text-blue-400 text-3xl font-bold">과거 1등 내역</p>
-        </div>
         <HistoryWinner />
       </div>
     </div>

@@ -1,25 +1,11 @@
-import { API_URL, FIRST_LOTTO_DATE } from "../constant";
 import Lotto from "../components/lotto";
 import CreateLotto from "../components/createLotto";
 import { Metadata } from "next";
-import { getThisWeek } from "../function/getWeek";
+import { getLotto } from "../function/getLotto";
 
 export const metadata: Metadata = {
   title: "Home",
 };
-
-async function getLotto() {
-  const response = await fetch(API_URL + getThisWeek(), {
-    cache: "no-store",
-  });
-  const json = await response.json();
-  if (json.returnValue === "fail") {
-    const response = await fetch(API_URL + (getThisWeek() - 1));
-    const json = await response.json();
-    return json;
-  }
-  return json;
-}
 
 export default async function Page() {
   const data = await getLotto();
@@ -53,6 +39,7 @@ export default async function Page() {
       <div className="flex flex-col w-2/3 justify-center items-center mt-6">
         <CreateLotto />
       </div>
+      <div className="flex flex-col w-2/3"></div>
     </div>
   );
 }

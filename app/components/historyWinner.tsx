@@ -5,33 +5,40 @@ import { useEffect, useState } from "react";
 import { db } from "../firebase";
 import Lotto from "./lotto";
 import { getThisWeek } from "../function/getWeek";
+import CompareNumber from "./compareNumber";
 
 // 전체 가져오기
-const getAllRoundInfo = async () => {
-  const data = [];
-  const querySnapshot = await getDocs(collection(db, "ddottos"));
-  querySnapshot.forEach((doc) => {
-    console.log(doc.data());
-  });
-  return data;
-};
+// const getAllRoundInfo = async () => {
+//   const data = [];
+//   const querySnapshot = await getDocs(collection(db, "ddottos"));
+//   querySnapshot.forEach((doc) => {
+//     console.log(doc.data());
+//   });
+//   return data;
+// };
 
 export default function HistoryWinner() {
   const [rounds, setRounds] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
   const [ballInfo, setBallInfo] = useState(null);
   useEffect(() => {
+    let ignore = false;
     //전체 가져오기
     const getAllRoundInfo = async () => {
       const data = [];
-      const querySnapshot = await getDocs(collection(db, "ddottos")); // 전체 가져오기
-      querySnapshot.forEach((doc) => {
-        data.push(doc.data().drwNo);
-      });
+      if (!ignore) {
+        const querySnapshot = await getDocs(collection(db, "ddottos")); // 전체 가져오기
+        querySnapshot.forEach((doc) => {
+          data.push(doc.data().drwNo);
+        });
+      }
       setRounds(data);
     };
     getAllRoundInfo();
     getRoundInfo(String(getThisWeek() - 1));
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   // 회차값으로 가져오기
@@ -48,7 +55,6 @@ export default function HistoryWinner() {
     event.preventDefault();
     setSelectedOption(event.target.value);
     getRoundInfo(String(event.target.value));
-    console.log(selectedOption);
   };
 
   const winnerBall = [
@@ -64,10 +70,10 @@ export default function HistoryWinner() {
 
   return (
     <div>
-      <div className="flex justify-center items-center mt-6 py-4 rounded-3xl bg-gray-800 w-full h-full">
+      <div className="flex justify-center items-center py-4 rounded-3xl bg-gray-800 w-full h-full">
         <p className="text-blue-400 text-3xl font-bold">지난 회차 확인</p>
         <select
-          className="bg-gray-400 ml-4 px-4 py-1 border-none rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-gray-400 w-28 ml-4 px-4 py-1 border-none rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={selectedOption}
           onChange={handleSelectChange}
         >
@@ -93,6 +99,7 @@ export default function HistoryWinner() {
           회차를 선택해주세요!
         </div>
       )}
+      <CompareNumber />
     </div>
   );
 }

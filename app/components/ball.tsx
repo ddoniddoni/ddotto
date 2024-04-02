@@ -1,4 +1,4 @@
-import { colorVariants } from "./lotto";
+import { colorVariants } from "../function/makeball";
 
 interface IBall {
   balls: Ball[];

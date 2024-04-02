@@ -1,7 +1,7 @@
 "use client";
-import React, { ChangeEvent, useState } from "react";
-import { colorVariants, makeBallColor } from "./lotto";
+import React, { useState } from "react";
 import Ball from "./ball";
+import { makeBallColor } from "../function/makeball";
 
 const numOptions = [
   { value: 1, label: "1게임" },
@@ -43,7 +43,7 @@ export default function CreateLotto() {
         <div className="w-60 h-28 flex text-xl justify-center items-center">
           나만의 번호 생성하기
         </div>
-        <div className="w-30 h-28 flex justify-center items-center">
+        <div className="w-30 h-16flex justify-center items-center">
           <select
             className="bg-gray-400 px-4 py-2 border-none rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={selectedOption}
