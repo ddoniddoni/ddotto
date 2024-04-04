@@ -21,6 +21,7 @@ export default function HistoryWinner() {
   const [rounds, setRounds] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
   const [ballInfo, setBallInfo] = useState(null);
+  const [games, setGames] = useState([]);
   useEffect(() => {
     let ignore = false;
     //전체 가져오기
@@ -29,10 +30,12 @@ export default function HistoryWinner() {
       if (!ignore) {
         const querySnapshot = await getDocs(collection(db, "ddottos")); // 전체 가져오기
         querySnapshot.forEach((doc) => {
-          data.push(doc.data().drwNo);
+          // data.push(doc.data().drwNo);
+          data.push(doc.data());
         });
       }
-      setRounds(data);
+      setRounds(data.map((d) => d.drwNo));
+      setGames(data);
     };
     getAllRoundInfo();
     getRoundInfo(String(getThisWeek() - 1));
@@ -99,7 +102,7 @@ export default function HistoryWinner() {
           회차를 선택해주세요!
         </div>
       )}
-      <CompareNumber />
+      <CompareNumber games={games} />
     </div>
   );
 }
