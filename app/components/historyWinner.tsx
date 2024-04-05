@@ -49,8 +49,9 @@ export default function HistoryWinner() {
     const docRef = doc(db, "ddottos", round);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      // const data = docSnap.data();
       setBallInfo(docSnap.data());
+    } else {
+      getRoundInfo(String(getThisWeek() - 2));
     }
   };
 

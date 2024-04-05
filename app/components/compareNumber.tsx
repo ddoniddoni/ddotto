@@ -1,15 +1,6 @@
 import { useState } from "react";
 import HistoryTable from "./histoyTable";
 
-interface IBalls {
-  drwtNo1: number;
-  drwtNo2: number;
-  drwtNo3: number;
-  drwtNo4: number;
-  drwtNo5: number;
-  drwtNo6: number;
-}
-
 interface IData {
   drwNo: number;
   bnusNo: number;
@@ -18,24 +9,39 @@ interface IData {
   firstPrzwnerCo: string;
   firstWinamnt: string;
   totSellamnt: string;
-  balls: IBalls[];
-  rank: string | null;
+  balls: number[];
+  rank: string;
+  matchedBalls: number[];
+  unmatchedballs: number[];
+  matchedBonusBall: number[];
+  matchedText: string;
 }
 
-const inputStyle = "w-8 h-8 mr-3 text-black text-center";
+const inputStyle = "w-8 h-8 mr-3 text-black text-center rounded-md";
 
-const checkLotto = (userNumbers: any[], games: any[]) => {
+const checkLotto = (userNumbers: number[], games: []) => {
   const gamesArray: IData[] = games.map((g) => {
     return {
-      drwNo: g.drwNo,
-      bnusNo: g.bnusNo,
-      drwNoDate: g.drwNoDate,
-      firstAccumamnt: g.firstAccumamnt,
-      firstPrzwnerCo: g.firstPrzwnerCo,
-      firstWinamnt: g.firstWinamnt,
-      totSellamnt: g.totSellamnt,
-      balls: [g.drwtNo1, g.drwtNo2, g.drwtNo3, g.drwtNo4, g.drwtNo5, g.drwtNo6],
+      drwNo: g["drwNo"],
+      bnusNo: g["bnusNo"],
+      drwNoDate: g["drwNoDate"],
+      firstAccumamnt: g["firstAccumamnt"],
+      firstPrzwnerCo: g["firstPrzwnerCo"],
+      firstWinamnt: g["firstWinamnt"],
+      totSellamnt: g["totSellamnt"],
+      balls: [
+        g["drwtNo1"],
+        g["drwtNo2"],
+        g["drwtNo3"],
+        g["drwtNo4"],
+        g["drwtNo5"],
+        g["drwtNo6"],
+      ],
       rank: "X",
+      matchedBalls: [],
+      unmatchedballs: [],
+      matchedBonusBall: [],
+      matchedText: "",
     };
   });
   for (let i = 0; i < gamesArray.length; i++) {
@@ -44,21 +50,36 @@ const checkLotto = (userNumbers: any[], games: any[]) => {
     for (let j = 0; j < userNumbers.length; j++) {
       if (gamesArray[i].balls.includes(userNumbers[j])) {
         matchedNumbers++;
+        gamesArray[i].matchedBalls.push(userNumbers[j]);
+      } else {
+        gamesArray[i].unmatchedballs.push(userNumbers[j]);
       }
+
       if (gamesArray[i].bnusNo === userNumbers[j]) {
         matchedBonus++;
+        gamesArray[i].matchedBonusBall.push(userNumbers[j]);
       }
+      gamesArray[i].matchedText = `${matchedNumbers}${
+        matchedBonus > 0 ? " + Bonus" : ""
+      }`;
     }
     switch (matchedNumbers) {
       case 6:
-        return (gamesArray[i].rank = "1등");
+        gamesArray[i].rank = "1등";
+        break;
       case 5:
-        if (matchedBonus === 1) return (gamesArray[i].rank = "2등");
-        return (gamesArray[i].rank = "3등");
+        if (matchedBonus === 1) {
+          gamesArray[i].rank = "2등";
+        } else {
+          gamesArray[i].rank = "3등";
+        }
+        break;
       case 4:
-        return (gamesArray[i].rank = "4등");
+        gamesArray[i].rank = "4등";
+        break;
       case 3:
-        return (gamesArray[i].rank = "5등");
+        gamesArray[i].rank = "5등";
+        break;
     }
   }
   return gamesArray;
@@ -66,7 +87,9 @@ const checkLotto = (userNumbers: any[], games: any[]) => {
 
 export default function CompareNumber({ games }) {
   const [numbers, setNumbers] = useState({});
-  const [data, setData] = useState<IData[] | any>([]);
+  const [data, setData] = useState<IData[] | string>([]);
+  // const [data, setData] = useState<IData[]>([]);
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const validInputValue = Number(e.target.value.replace(/[^0-9]/g, ""));
     if (validInputValue > 45 || validInputValue <= 0) {
@@ -79,9 +102,10 @@ export default function CompareNumber({ games }) {
       });
     }
   };
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const userNumber = Object.values(numbers);
+    const userNumber: number[] = Object.values(numbers);
     const set = new Set(userNumber);
     if (userNumber.length !== set.size) {
       window.alert("중복된 숫자가 존재합니다.");
@@ -90,6 +114,7 @@ export default function CompareNumber({ games }) {
       setData(data);
     }
   };
+
   return (
     <div>
       <div className="flex justify-around items-center mt-6 py-4 rounded-3xl bg-gray-800 w-full h-20">
@@ -150,7 +175,9 @@ export default function CompareNumber({ games }) {
           </button>
         </form>
       </div>
-      {data.length > 0 ? <HistoryTable data={data} /> : <></>}
+      <div className="mt-6">
+        {data.length > 0 ? <HistoryTable data={data} /> : <></>}
+      </div>
     </div>
   );
 }

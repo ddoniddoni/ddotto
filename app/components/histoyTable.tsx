@@ -1,4 +1,10 @@
 export default function HistoryTable({ data }) {
+  const tableData = data.map((d: {}) => {
+    return {
+      ...d,
+      balls: d["balls"].join(", "),
+    };
+  });
   const columns = [
     {
       id: "drwNo",
@@ -9,12 +15,24 @@ export default function HistoryTable({ data }) {
       name: "날짜",
     },
     {
+      id: "balls",
+      name: "당첨번호",
+    },
+    {
+      id: "bnusNo",
+      name: "보너스번호",
+    },
+    {
+      id: "matchedText",
+      name: "번호일치",
+    },
+    {
       id: "rank",
       name: "등수",
     },
   ];
   return (
-    <table className="border-collapse border border-blue-500 m-auto">
+    <table className="bg-gray-800 w-full">
       <thead>
         <tr className="border border-gray-500">
           {columns.map((column) => (
@@ -25,10 +43,13 @@ export default function HistoryTable({ data }) {
         </tr>
       </thead>
       <tbody>
-        {data.map((item, index) => (
+        {tableData.map((item: {}, index: number) => (
           <tr key={index} className="border border-gray-500">
             {columns.map((column) => (
-              <td key={column.id} className="border border-gray-500 py-2 px-4">
+              <td
+                key={column.id}
+                className="border text-center border-gray-500 p-5"
+              >
                 {item[column.id]}
               </td>
             ))}
